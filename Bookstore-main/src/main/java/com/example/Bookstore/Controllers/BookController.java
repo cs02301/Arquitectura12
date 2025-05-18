@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.example.Bookstore.Models.Book;
 import com.example.Bookstore.Services.BookService;
 
 @RestController
 @RequestMapping("/api/books")
+@CrossOrigin(origins = "http://localhost:5173") // Add this annotation
 public class BookController {
 
     private final BookService bookService;
@@ -28,8 +30,9 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> getAllBooks() {
-        return bookService.findAll();
+    public ResponseEntity<List<Book>> getAllBooks() {
+        List<Book> books = bookService.findAll();
+        return ResponseEntity.ok(books);
     }
 
     @GetMapping("/{id}")
