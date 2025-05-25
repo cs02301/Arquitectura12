@@ -16,13 +16,18 @@ import NotFoundPage from './pages/NotFoundPage';
 import { CartProvider } from './contexts/CartContext';
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-  // Set default authentication to true for testing
-  localStorage.setItem('isAuthenticated', 'true');
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 function App() {
+  React.useEffect(() => {
+    // Ensure authentication state is initialized
+    if (!localStorage.getItem('isAuthenticated')) {
+      localStorage.setItem('isAuthenticated', 'true');
+    }
+  }, []);
+
   return (
     <CartProvider>
       <Router>
